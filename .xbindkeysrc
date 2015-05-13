@@ -1,0 +1,14 @@
+# Lock Screen
+"xscreensaver-command --lock"
+    m:0x40 + c:22
+    Mod4 + BackSpace
+
+# Dim Brightness
+"xbacklight -dec 15 -time o -steps 1"
+    m:0x0 + c:67
+    F1
+
+# Add Brightness
+"xbacklight -inc 15 -time o -steps 1"
+    m:0x0 + c:68
+    F2
