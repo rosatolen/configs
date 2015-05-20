@@ -1,0 +1,6 @@
+URxvt*background: Black
+URxvt*foreground: White
+URxvt*scrollBar: false
+URxvt*transparent: true
+URxvt*shading: 30
+URxvt.font: -misc-fixed-*-*-normal-*-*-*-*-*-*-*-*-*
