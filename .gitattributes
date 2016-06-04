@@ -4,5 +4,4 @@
 .profile filter=git-crypt diff=git-crypt
 .vimrc.local filter=git-crypt diff=git-crypt
 .vimrc.bundles.local filter=git-crypt diff=git-crypt
-machine-setup.sh filter=git-crypt diff=git-crypt
 env.example filter=git-crypt diff=git-crypt
