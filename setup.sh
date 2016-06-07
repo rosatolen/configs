@@ -11,7 +11,7 @@ if [[ $1 == 'reset' ]]; then
 fi
 
 _sudo () {
-    echo "Running: $@ in `pwd`"
+    echo "Running: '$@' in `pwd`"
     sudo $@
 }
 
