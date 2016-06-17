@@ -19,6 +19,9 @@ pkgmgr_install () {
     if [ -f /etc/fedora-release ]; then
         _sudo dnf install $@
     fi
+    if [[ `uname -r` == *"ARCH"* ]]; then
+        _sudo pacman -S $@
+    fi
 }
 
 dev_tools() {
@@ -38,11 +41,16 @@ git_setup () {
 }
 
 vim_setup () {
-    pkgmgr_install vim-enhanced
+    pkgmgr_install vim
     curl https://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
-    ln -s .vimrc.local $HOME/.vimrc.local
-    ln -s .vimrc.bundles.local $HOME/.vimrc.bundles.local
+    if [ -f $HOME/.vimrc.local ]; then
+        ln -s .vimrc.local $HOME/.vimrc.local
+    fi
+    if [ -f $HOME/.vimrc.bundles.local ]; then
+        ln -s .vimrc.bundles.local $HOME/.vimrc.bundles.local
+    fi
     vim +BundleInstall
+    rm spf13-vim.sh
 }
 
 virtualbox_part1 () {
@@ -187,4 +195,28 @@ gitcrypt_setup() {
     _sudo make install
     cd ..
     cd ..
+    rm gitcrypt
+}
+
+lenovo_setup() {
+    pkgmgr_install alsa-utils
+    pkgmgr_install xf86-input-synaptics
+}
+
+ssh_pub_setup() {
+    if [[ -z "$1" ]]; then
+        echo "Usage: $0 <email>"
+        echo "Please pass in the email you wish to associate this ssh key with"
+        exit 1
+    fi
+    ssh-keygen -t rsa -b 4096 -C "$1"
+    eval "$(ssh-agent)"
+    ssh-add ~/.ssh/id_rsa
+    cat ~/.ssh/id_rsa.pub
+}
+
+basic_install() {
+    gitcrypt_setup
+    vim_setup
+    ssh_pub_setup $1
 }
