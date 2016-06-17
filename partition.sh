@@ -1,29 +1,41 @@
-parted /dev/sda mklabel msdos
-parted /dev/sda mkpart primary ext3 1MiB 100MiB
-parted /dev/sda set 1 boot on
-parted /dev/sda mkpart primary ext3 100MiB 100%
+#######################################################################
+# SETUP VARIABLES
+#######################################################################
+BOOT_DEVICE=/dev/sdb
+BOOT_DEVICE_PARTITION=/dev/sdb1
+MAIN_DRIVE=/dev/sda
+MAIN_DRIVE_PARTITION=/dev/sda1
 
-###################################################################
-# Instructions here will branch for different starting state of disk
+
+
+parted $BOOT_DEVICE mklabel msdos
+parted $BOOT_DEVICE mkpart primary ext3 1MiB 100MiB
+parted $BOOT_DEVICE set 1 boot on
+parted $MAIN_DRIVE mklabel msdos
+parted $MAIN_DRIVE mkpart primary ext3 100MiB 100%
+
+#######################################################################
+# Instructions here should branch for different starting state of disk
+#######################################################################
 # Currently assumes that the disk was previously encrypted
-###################################################################
-dd if=/dev/urandom of=/dev/sda2 bs=512 count=20480
+# Remove previous LUKS key
+dd if=/dev/urandom of=$MAIN_DRIVE_PARTITION bs=512 count=20480
 
 ###################################################################
 # Both cryptsetup steps will require a user generated passphrase
-cryptsetup luksFormat /dev/sda2
-cryptsetup open /dev/sda2 base
+cryptsetup luksFormat $MAIN_DRIVE_PARTITION
+cryptsetup open $MAIN_DRIVE_PARTITION base
 ###################################################################
 
-mkfs.ext4 /dev/sda1
+mkfs.ext4 $BOOT_DEVICE_PARTITION
 mkfs.ext4 /dev/mapper/base
 mount /dev/mapper/base /mnt
 mkdir /mnt/boot
-mount /dev/sda1 /mnt/boot
+mount $BOOT_DEVICE_PARTITION /mnt/boot
 
 pacstrap -i /mnt base base-devel
-genfstab -U /mnt > /mnt/etc/fstab
 
+genfstab -U /mnt > /mnt/etc/fstab
 ###################################################################
 # Create branch to check if fstab worked properly
 ###################################################################

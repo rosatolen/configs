@@ -1,12 +1,13 @@
+abs
 acpi
 autoconf
 automake
 bison
+bash-completion
 chromium
 dmenu
-dwm-git
-fakeroot
 feh
+fakeroot
 firefox
 flex
 gcc
@@ -25,7 +26,6 @@ mdadm
 nano
 netctl
 openssh
-pacaur
 patch
 pcmciautils
 pkg-config
@@ -34,8 +34,8 @@ psmisc
 reiserfsprogs
 rxvt-unicode
 usbutils
-vi
 vim
+emacs
 wget
 which
 wmname
@@ -62,7 +62,6 @@ xorg-xwd
 xorg-xwininfo
 xorg-xwud
 xscreensaver
-zsh
 keepassx
 xclip
 tig

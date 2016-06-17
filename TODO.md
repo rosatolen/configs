@@ -1,4 +1,6 @@
+** Coreboot
+** Seabios
+* Add password manager setup
+* Add hkps gpg
 * Add firewall rules
 * Add sudo rules
-* Add automation for password manager setup
-* Add automation for setting up ssh
