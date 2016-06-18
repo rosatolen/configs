@@ -5,3 +5,5 @@
 .vimrc.local filter=git-crypt diff=git-crypt
 .vimrc.bundles.local filter=git-crypt diff=git-crypt
 env.example filter=git-crypt diff=git-crypt
+more.sh filter=git-crypt diff=git-crypt
+.xinitrc filter=git-crypt diff=git-crypt
