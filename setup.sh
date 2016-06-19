@@ -39,6 +39,7 @@ git_setup () {
 
 vim_setup () {
     pkgmgr_install vim
+    pkgmgr_install vim-systemd
     curl https://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
     if [ -f $HOME/.vimrc.local ]; then
         ln -s .vimrc.local $HOME/.vimrc.local
@@ -115,6 +116,14 @@ ssh_pub_setup() {
     eval "$(ssh-agent)"
     ssh-add ~/.ssh/id_rsa
     cat ~/.ssh/id_rsa.pub
+}
+
+gnome_setup() {
+    pkgmgr_install gnome gdm
+    if isArch; then
+        pacaur -y gnome-shell-extension-arch-update
+    fi
+    _sudo systemctl enable gdm
 }
 
 basic_install() {
