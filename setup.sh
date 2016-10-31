@@ -2,9 +2,6 @@
 
 set -e
 
-gnupg_src_dir='gnupg-src'
-gitcrypt_dir='gitcrypt'
-
 if [[ $1 == 'reset' ]]; then
     rm -r $gnupg_src_dir $gitcrypt_dir 2>/dev/null
     exit
@@ -27,10 +24,14 @@ dev_tools() {
 }
 
 direnv_setup() {
-    VERSION=$(curl -Ls -o /dev/null -w %{url_effective} https://github.com/direnv/direnv/releases/latest | cut -d / -f8)
-    wget https://github.com/direnv/direnv/releases/download/$VERSION/direnv.linux-amd64 -O $HOME/direnv.linux-amd64
-    chmod u+x $HOME/direnv.linux-amd64
-    _sudo mv $HOME/direnv.linux-amd64 /usr/bin/direnv
+    if isArch; then
+        pacaur -y direnv
+    else
+        VERSION=$(curl -Ls -o /dev/null -w %{url_effective} https://github.com/direnv/direnv/releases/latest | cut -d / -f8)
+        wget https://github.com/direnv/direnv/releases/download/$VERSION/direnv.linux-amd64 -O $HOME/direnv.linux-amd64
+        chmod u+x $HOME/direnv.linux-amd64
+        _sudo mv $HOME/direnv.linux-amd64 /usr/bin/direnv
+    fi
 }
 
 git_setup () {
@@ -41,12 +42,10 @@ vim_setup () {
     pkgmgr_install vim
     pkgmgr_install vim-systemd
     curl https://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
-    if [ -f $HOME/.vimrc.local ]; then
-        ln -s .vimrc.local $HOME/.vimrc.local
-    fi
-    if [ -f $HOME/.vimrc.bundles.local ]; then
-        ln -s .vimrc.bundles.local $HOME/.vimrc.bundles.local
-    fi
+    rm $HOME/.vimrc.local
+    ln -s .vimrc.local $HOME/.vimrc.local
+    rm $HOME/.vimrc.bundles.local
+    ln -s .vimrc.bundles.local $HOME/.vimrc.bundles.local
     vim +BundleInstall
     rm spf13-vim.sh
 }
@@ -120,9 +119,6 @@ ssh_pub_setup() {
 
 gnome_setup() {
     pkgmgr_install gnome gdm
-    if isArch; then
-        pacaur -y gnome-shell-extension-arch-update
-    fi
     _sudo systemctl enable gdm
 }
 
@@ -132,3 +128,5 @@ basic_install() {
     ssh_pub_setup $1
     direnv_setup
 }
+
+vim_setup
