@@ -43,9 +43,9 @@ vim_setup () {
     pkgmgr_install vim-systemd
     curl https://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
     rm $HOME/.vimrc.local
-    ln -s .vimrc.local $HOME/.vimrc.local
+    ln -s $(pwd)/.vimrc.local $HOME/.vimrc.local
     rm $HOME/.vimrc.bundles.local
-    ln -s .vimrc.bundles.local $HOME/.vimrc.bundles.local
+    ln -s $(pwd)/.vimrc.bundles.local $HOME/.vimrc.bundles.local
     vim +BundleInstall
     rm spf13-vim.sh
 }
@@ -61,26 +61,6 @@ go_setup () {
         mkdir $HOME/.gopaths  # Project Specific Gopath
     fi
     cp ./env.example $HOME/.gopaths
-}
-
-yubikey_setup() {
-    pkgmgr_install libusb mingw63-qt libyubikey libyubikey-devel
-
-    git clone https://github.com/Yubico/yubico-c
-    cd yubico-c
-    autoreconf --install
-    ./configure
-    _sudo make install
-    cd ..
-    rm yubico-c
-
-    git clone https://github.com/Yubico/yubikey-personalization
-    cd yubikey-personalization
-    autoreconf --install
-    ./configure
-    _sudo make install
-    cd ..
-    rm yubikey-personalization
 }
 
 gitcrypt_setup() {
