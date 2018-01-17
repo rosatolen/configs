@@ -7,3 +7,4 @@
 env.example filter=git-crypt diff=git-crypt
 more.sh filter=git-crypt diff=git-crypt
 .xinitrc filter=git-crypt diff=git-crypt
+package-list filter=git-crypt diff=git-crypt

@@ -11,4 +11,3 @@ While it automates many of the processes involved, it also serves as a guide for
 3. Run `chroot-config.sh`
 4. Run `provision.sh`
 5. Run `pacaur.sh`
-6. Run `simple-ssh-setup.sh`

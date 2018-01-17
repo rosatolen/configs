@@ -39,5 +39,6 @@ genfstab -U /mnt > /mnt/etc/fstab
 ###################################################################
 # Create branch to check if fstab worked properly
 ###################################################################
+vim /mnt/etc/fstab
 
 arch-chroot /mnt /bin/bash
