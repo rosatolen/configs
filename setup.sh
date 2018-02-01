@@ -35,29 +35,32 @@ direnv_setup() {
 }
 
 git_setup () {
-    ln -s .gitconfig $HOME/.gitconfig
+    #This should be done in the configs folder :(
+    ln -s $(pwd)/.gitconfig $HOME/.gitconfig
 }
 
 vim_setup () {
-    pkgmgr_install vim
-    pkgmgr_install vim-systemd
+    #This should be done in the configs folder :(
+    pkgmgr_install vim vim-systemd
     curl https://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
-    rm $HOME/.vimrc.local
+    #TODO: check if this file exists before trying to remove it
+    #rm $HOME/.vimrc.local
     ln -s $(pwd)/.vimrc.local $HOME/.vimrc.local
-    rm $HOME/.vimrc.bundles.local
+    #TODO: check if this file exists before trying to remove it
+    #rm $HOME/.vimrc.bundles.local
     ln -s $(pwd)/.vimrc.bundles.local $HOME/.vimrc.bundles.local
     vim +BundleInstall
     rm spf13-vim.sh
 }
 
 go_setup () {
-    if ! hash go 2>/dev/null; then
+    if [ ! hash go 2>/dev/null ]; then
         pkgmgr_install go
     fi
-    if [ ! -d $HOME/.gopath; ]; then
+    if [ ! -d $HOME/.gopath ]; then
         mkdir $HOME/.gopath   # Global Gopath
     fi
-    if [ ! -d $HOME/.gopaths; ]; then
+    if [ ! -d $HOME/.gopaths ]; then
         mkdir $HOME/.gopaths  # Project Specific Gopath
     fi
     cp ./env.example $HOME/.gopaths
@@ -65,13 +68,14 @@ go_setup () {
 
 gitcrypt_setup() {
     mkdir gitcrypt && cd gitcrypt
-    wget https://www.agwa.name/projects/git-crypt/downloads/git-crypt-0.5.0.tar.gz.asc
-    wget https://www.agwa.name/projects/git-crypt/downloads/git-crypt-0.5.0.tar.gz
-    wget -O andrew.ayer.asc https://www.agwa.name/about/keys/0xEF5D84C1838F2EB6D8968C0410378EFC2080080C.pub.asc
-    gpg --import andrew.ayer.asc
-    gpg --verify git-crypt-0.5.0.tar.gz.asc
-    tar xvf git-crypt-0.5.0.tar.gz
-    cd git-crypt-0.5.0
+    VERSION=0.6.0
+    wget https://www.agwa.name/projects/git-crypt/downloads/git-crypt-$VERSION.tar.gz.asc
+    wget https://www.agwa.name/projects/git-crypt/downloads/git-crypt-$VERSION.tar.gz
+    #wget -O andrew.ayer.asc https://www.agwa.name/about/keys/0xEF5D84C1838F2EB6D8968C0410378EFC2080080C.pub.asc
+    #gpg --import andrew.ayer.asc
+    gpg --verify git-crypt-$VERSION.tar.gz.asc
+    tar xvf git-crypt-$VERSION.tar.gz
+    cd git-crypt-$VERSION
 
     make
     _sudo make install
@@ -98,15 +102,17 @@ ssh_pub_setup() {
 }
 
 gnome_setup() {
-    pkgmgr_install gnome gdm
+    pkgmgr_install gnome gdm networkmanager network-manager-applet dhclient
     _sudo systemctl enable gdm
+    _sudo systemctl enable NetworkManager.service
 }
 
 basic_install() {
+    lenovo_setup
+    # THIS IS ORDERED
     gitcrypt_setup
+    # UNLOCK REPO HERE
+    git_setup
     vim_setup
-    ssh_pub_setup $1
     direnv_setup
 }
-
-vim_setup
