@@ -1,0 +1,13 @@
+# example .envrc file for direnv
+export GO_CURRENT_PROJECT=<name>
+export ORG_NAME=<org>
+export GO_CURRENT_PACKAGE=github.com/$ORG_NAME
+export LOCAL_GOPATH=$HOME/.gopaths/$GO_CURRENT_PROJECT
+export GOPATH=$LOCAL_GOPATH
+
+PATH_add $LOCAL_GOPATH/bin
+mkdir -p $LOCAL_GOPATH
+mkdir -p $LOCAL_GOPATH/src
+mkdir -p $LOCAL_GOPATH/pkg
+mkdir -p $LOCAL_GOPATH/bin
+mkdir -p $LOCAL_GOPATH/src/$GO_CURRENT_PACKAGE
