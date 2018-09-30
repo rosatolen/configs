@@ -68,6 +68,10 @@ function KeepCursorLine(funcToExe)
   call winrestview(current_window)
 endfunction
 
+""" CtrlP
+" Use ack's defaults to list files
+let g:ctrlp_user_command = 'ack -f %s'
+
 """ Grep
 set grepprg=ack
 
@@ -124,8 +128,30 @@ function AggressiveHTMLFormat()
 endfunction
 autocmd BufRead,BufNewFile *.html :call KeepCursorLine(function('AggressiveHTMLFormat'))
 
+""" Rust
+"function AggressiveRustFormat()
+"  silent! %!rustfmt --emit stdout
+"endfunction
+"autocmd BufWritePre *.rs :call KeepCursorLine(function('AggressiveRustFormat'))
+" Using rust-lang/rust.vim and racer with vim-racer
+let g:rustfmt_autosave = 1
+autocmd FileType rust nmap gd <Plug>(rust-def)
+autocmd FileType rust nmap gds <Plug>(rust-def-split)
+autocmd FileType rust nmap gdv <Plug>(rust-def-vertical)
+autocmd FileType rust nmap <S-k> <Plug>(rust-doc)
+let g:racer_experimental_completer = 1
 
-""" WIP
+
+
+
+
+
+
+
+
+
+
+""" BELOW THERE BE WIP
 
 "function Dos2Unix()
 "  silent! execute ':%s/\r\(\n\)/\1/g'
